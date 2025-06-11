@@ -1,0 +1,12 @@
+node_modules/
+.vscode/
+*.log
+*.sql
+*.db
+.env
+.DS_Store
+.history/
+*.iml
+.idea/
+*.exe
+*.dll
