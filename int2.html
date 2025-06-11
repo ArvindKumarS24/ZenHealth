@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenHealth - Professional Wellness Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-emerald: #10b981;
+            --primary-teal: #14b8a6;
+            --secondary-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --gradient-primary: linear-gradient(135deg, #10b981, #14b8a6);
+            --gradient-secondary: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --gradient-accent: linear-gradient(135deg, #ec4899, #f97316);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--neutral-900);
+            color: var(--neutral-50);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-gradient-primary {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .text-gradient-secondary {
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 1001;
+            transition: width 0.1s;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-emerald);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.7;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor.active {
+            width: 50px;
+            height: 50px;
+            opacity: 0.3;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--neutral-900);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+            margin-bottom: 2rem;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: var(--neutral-700);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            animation: loadingProgress 3s ease-in-out;
+        }
+
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(15, 23, 42, 0.98);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotateY(0deg); }
+            50% { transform: translateY(-5px) rotateY(180deg); }
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--neutral-300);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .nav-link:hover {
+            color: var(--neutral-50);
+        }
+
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Mobile Menu */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .mobile-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-emerald);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            z-index: -2;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 1000px;
+            padding: 0 2rem;
+            z-index: 2;
+            animation: heroFadeIn 1.5s ease-out;
+        }
+
+        @keyframes heroFadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--neutral-300);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, var(--primary-emerald), var(--secondary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            margin-bottom: 3rem;
+            color: var(--neutral-300);
+            font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .hero-cta-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .hero-cta-secondary {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--neutral-50);
+        }
+
+        .hero-cta-secondary:hover {
+            background: var(--glass-border);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-emerald);
+            display: block;
+        }
+
+        .hero-stat-label {
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--primary-emerald);
+            opacity: 0.2;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-icon:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 60%; right: 15%; animation-delay: 2s; }
+        .floating-icon:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-icon:nth-child(4) { top: 40%; right: 20%; animation-delay: 1s; }
+        .floating-icon:nth-child(5) { bottom: 20%; right: 10%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--primary-emerald);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--neutral-400);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--neutral-50);
+        }
+
+        .feature-card p {
+            color: var(--neutral-400);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-link {
+            color: var(--primary-emerald);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-link:hover {
+            gap: 1rem;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            height: 500px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2));
+        }
+
+        .about-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--neutral-50);
+        }
+
+        .about-content p {
+            color: var(--neutral-400);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .about-stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+        }
+
+        .about-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-emerald);
+            display: block;
+        }
+
+        .about-stat-label {
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .service-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .service-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-content {
+            padding: 2rem;
+        }
+
+        .service-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--neutral-50);
+        }
+
+        .service-content p {
+            color: var(--neutral-400);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-emerald);
+            margin-bottom: 1rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            color: var(--primary-emerald);
+            font-weight: bold;
+        }
+
+        .service-cta {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .team-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            border: 4px solid var(--primary-emerald);
+        }
+
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--neutral-50);
+        }
+
+        .team-role {
+            color: var(--primary-emerald);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .team-bio {
+            color: var(--neutral-400);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .team-social a {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-400);
+            transition: all 0.3s ease;
+        }
+
+        .team-social a:hover {
+            background: var(--primary-emerald);
+            color: white;
+        }
+
+        /* Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .testimonial-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .testimonial-quote {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--neutral-300);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--primary-emerald);
+            position: absolute;
+            top: -1rem;
+            left: -1rem;
+            opacity: 0.3;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-info h4 {
+            font-weight: 600;
+            color: var(--neutral-50);
+            margin-bottom: 0.25rem;
+        }
+
+        .testimonial-info p {
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+        }
+
+        .testimonial-rating {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 1rem;
+        }
+
+        /* Blog Section */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .blog-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .blog-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+        }
+
+        .blog-category {
+            background: var(--primary-emerald);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .blog-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--neutral-50);
+            line-height: 1.4;
+        }
+
+        .blog-excerpt {
+            color: var(--neutral-400);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-link {
+            color: var(--primary-emerald);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .blog-link:hover {
+            gap: 1rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .newsletter h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--neutral-50);
+        }
+
+        .newsletter p {
+            color: var(--neutral-400);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--neutral-50);
+            font-size: 1rem;
+        }
+
+        .newsletter-form input::placeholder {
+            color: var(--neutral-400);
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--primary-emerald);
+        }
+
+        .newsletter-form button {
+            padding: 1rem 2rem;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--neutral-800);
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-section h3 {
+            color: var(--neutral-50);
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--neutral-400);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-emerald);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--neutral-400);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-400);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary-emerald);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(15, 23, 42, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+
+            .nav-menu.active {
+                transform: translateX(0);
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-form input {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 5rem 1rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading">
+        <div class="loading-content">
+            <div class="loading-logo">ZenHealth</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="logo-text">ZenHealth</div>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#team" class="nav-link">Team</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
+                <li><a href="#contact" class="nav-cta">Get Started</a></li>
+            </ul>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-meditating-under-a-waterfall-1772-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="floating-elements">
+            <div class="floating-icon"><i class="fas fa-leaf"></i></div>
+            <div class="floating-icon"><i class="fas fa-heart"></i></div>
+            <div class="floating-icon"><i class="fas fa-brain"></i></div>
+            <div class="floating-icon"><i class="fas fa-spa"></i></div>
+            <div class="floating-icon"><i class="fas fa-water"></i></div>
+        </div>
+        <div class="hero-content">
+            
+            <h1>Transform Your Life Through Holistic Wellness</h1>
+            <p class="hero-subtitle">
+                Discover the perfect balance of mind, body, and spirit with our comprehensive wellness platform. 
+                Join thousands who have already transformed their lives through our evidence-based programs.
+            </p>
+            <div class="hero-cta-group">
+                <a href="#services" class="hero-cta hero-cta-primary">
+                    <i class="fas fa-rocket"></i>
+                    Start Your Journey
+                </a>
+                <a href="#about" class="hero-cta hero-cta-secondary">
+                    <i class="fas fa-play"></i>
+                    Watch Demo
+                </a>
+            </div>
+            
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" style="background: var(--neutral-800);">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge" style="font-size: 2.25rem;">Our Features</div>
+                <h2 class="section-title">Comprehensive Wellness Solutions</h2>
+                <p class="section-subtitle">
+                    Experience the future of wellness with our cutting-edge platform designed to nurture every aspect of your well-being.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Mindful Meditation</h3>
+                    <p>Guided meditation sessions designed to reduce stress, improve focus, and cultivate inner peace through scientifically-backed techniques.</p>
+                    
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>Personalized Fitness</h3>
+                    <p>AI-powered workout plans tailored to your fitness level, goals, and preferences with real-time form correction and progress tracking.</p>
+                    
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h3>Nutrition Guidance</h3>
+                    <p>Personalized meal plans and nutrition coaching from certified dietitians to fuel your body and support your wellness goals.</p>
+                    
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Expert Consultations</h3>
+                    <p>Connect with certified wellness experts, therapists, and healthcare professionals for personalized guidance and support.</p>
+                   
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Progress Tracking</h3>
+                    <p>Advanced analytics and insights to monitor your wellness journey with detailed reports and personalized recommendations.</p>
+                    
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Support</h3>
+                    <p>Join a vibrant community of like-minded individuals on their wellness journey with group challenges and peer support.</p>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="section-container">
+            <div class="about-grid">
+                <div class="about-image fade-in">
+                    <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 195919.png">
+                </div>
+                <div class="about-content fade-in">
+                    <div class="section-badge" style="font-size: 2.25rem;">About ZenHealth</div>
+                    <h3>Pioneering the Future of Holistic Wellness</h3>
+                    <p>
+                        At ZenHealth, we believe that true wellness encompasses the harmony of mind, body, and spirit. 
+                        Our platform combines ancient wisdom with modern technology to create personalized wellness 
+                        experiences that fit seamlessly into your lifestyle.
+                    </p>
+                    <p>
+                        Founded by a team of wellness experts, healthcare professionals, and technology innovators, 
+                        we're committed to making holistic wellness accessible to everyone, everywhere.
+                    </p>
+                    <div class="about-stats">
+                        <div class="about-stat">
+                            <span class="about-stat-number">10+</span>
+                            <span class="about-stat-label">Years Experience</span>
+                        </div>
+                        <div class="about-stat">
+                            <span class="about-stat-number">500+</span>
+                            <span class="about-stat-label">Certified Experts</span>
+                        </div>
+                        <div class="about-stat">
+                            <span class="about-stat-number">50K+</span>
+                            <span class="about-stat-label">Lives Transformed</span>
+                        </div>
+                        <div class="about-stat">
+                            <span class="about-stat-number">98%</span>
+                            <span class="about-stat-label">Satisfaction Rate</span>
+                        </div>
+                    </div>
+                    <a href="#services" class="hero-cta hero-cta-primary">
+                        <i class="fas fa-arrow-right"></i>
+                        Explore Our Services
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services" style="background: var(--neutral-800);">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge" style="font-size: 2.25rem;">Our Services</div>
+                <h2 class="section-title">Choose Your Wellness Path</h2>
+                <p class="section-subtitle">
+                    Discover our comprehensive range of wellness services designed to meet you wherever you are on your journey.
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 200503.png" alt="Meditation and mindfulness program">
+                    </div>
+                    <div class="service-content">
+                        <h3>Mindfulness & Meditation</h3>
+                        <p>Comprehensive meditation programs designed to reduce stress, improve focus, and cultivate inner peace.</p>
+                        <div class="service-price">$29/month</div>
+                        <ul class="service-features">
+                            <li>Daily guided meditations</li>
+                            <li>Stress reduction techniques</li>
+                            <li>Sleep improvement programs</li>
+                            <li>Mindfulness exercises</li>
+                            <li>Progress tracking</li>
+                        </ul>
+                        <button class="service-cta">Get Started</button>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 200801.png" alt="Personal fitness training">
+                    </div>
+                    <div class="service-content">
+                        <h3>Personal Fitness</h3>
+                        <p>Customized workout plans and personal training sessions tailored to your fitness goals and lifestyle.</p>
+                        <div class="service-price">$49/month</div>
+                        <ul class="service-features">
+                            <li>Personalized workout plans</li>
+                            <li>Virtual personal training</li>
+                            <li>Form correction technology</li>
+                            <li>Nutrition guidance</li>
+                            <li>Progress analytics</li>
+                        </ul>
+                        <button class="service-cta">Get Started</button>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 200909.png" alt="Nutrition consultation">
+                    </div>
+                    <div class="service-content">
+                        <h3>Nutrition Coaching</h3>
+                        <p>Expert nutrition guidance and meal planning to fuel your body and support your wellness goals.</p>
+                        <div class="service-price">$39/month</div>
+                        <ul class="service-features">
+                            <li>Personalized meal plans</li>
+                            <li>Nutritionist consultations</li>
+                            <li>Macro tracking</li>
+                            <li>Recipe database</li>
+                            <li>Shopping lists</li>
+                        </ul>
+                        <button class="service-cta">Get Started</button>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 201019.png" alt="Mental health therapy">
+                    </div>
+                    <div class="service-content">
+                        <h3>Mental Health Support</h3>
+                        <p>Professional therapy and counseling services to support your mental health and emotional well-being.</p>
+                        <div class="service-price">$79/month</div>
+                        <ul class="service-features">
+                            <li>Licensed therapist sessions</li>
+                            <li>Cognitive behavioral therapy</li>
+                            <li>Anxiety & depression support</li>
+                            <li>Crisis intervention</li>
+                            <li>24/7 support hotline</li>
+                        </ul>
+                        <button class="service-cta">Get Started</button>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 201224.png" alt="Wellness coaching">
+                    </div>
+                    <div class="service-content">
+                        <h3>Wellness Coaching</h3>
+                        <p>Comprehensive wellness coaching that integrates all aspects of your health and lifestyle.</p>
+                        <div class="service-price">$99/month</div>
+                        <ul class="service-features">
+                            <li>Personal wellness coach</li>
+                            <li>Holistic health assessment</li>
+                            <li>Goal setting & tracking</li>
+                            <li>Lifestyle optimization</li>
+                            <li>Monthly check-ins</li>
+                        </ul>
+                        <button class="service-cta">Get Started</button>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 204721.png" alt="Premium wellness package">
+                    </div>
+                    <div class="service-content">
+                        <h3>Premium Package</h3>
+                        <p>All-inclusive wellness package with access to every service and premium features.</p>
+                        <div class="service-price">$149/month</div>
+                        <ul class="service-features">
+                            <li>All services included</li>
+                            <li>Priority support</li>
+                            <li>Advanced analytics</li>
+                            <li>Exclusive content</li>
+                            <li>VIP community access</li>
+                        </ul>
+                        <button class="service-cta">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="section" id="team">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">Our Team</div>
+                <h2 class="section-title">Meet Our Wellness Experts</h2>
+                <p class="section-subtitle">
+                    Our team of certified professionals is dedicated to guiding you on your wellness journey with expertise and compassion.
+                </p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card fade-in">
+                    <div class="team-avatar">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Dr. Sarah Chen">
+                    </div>
+                    <h3>Dr. Sarah Chen</h3>
+                    <div class="team-role">Chief Wellness Officer</div>
+                    <p class="team-bio">
+                        Dr. Chen is a licensed psychologist with over 15 years of experience in mindfulness-based therapy and wellness coaching.
+                    </p>
+                    <div class="team-social">
+                        <a href="https://www.linkedin.com/in/arvindkumars/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="team-card fade-in">
+                    <div class="team-avatar">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Dr Mike Rodriguez">
+                    </div>
+                    <h3>Mike Rodriguez</h3>
+                    <div class="team-role">Head of Fitness</div>
+                    <p class="team-bio">
+                        Certified personal trainer and former Olympic athlete with expertise in strength training, conditioning, and injury prevention.
+                    </p>
+                    <div class="team-social">
+                        <a href="https://www.linkedin.com/in/arvindkumars/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/arvindsurya._.kumar/"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="team-card fade-in">
+                    <div class="team-avatar">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Dr. Emily Watson">
+                    </div>
+                    <h3>Dr. Emily Watson</h3>
+                    <div class="team-role">Lead Nutritionist</div>
+                    <p class="team-bio">
+                        Registered dietitian and nutrition scientist specializing in functional medicine and personalized nutrition plans.
+                    </p>
+                    <div class="team-social">
+                        <a href="https://www.linkedin.com/in/arvindkumars/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="team-card fade-in">
+                    <div class="team-avatar">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Dr. James Park">
+                    </div>
+                    <h3>Dr. James Park</h3>
+                    <div class="team-role">Mental Health Director</div>
+                    <p class="team-bio">
+                        Licensed clinical psychologist specializing in cognitive behavioral therapy, anxiety, and depression treatment.
+                    </p>
+                    <div class="team-social">
+                        <a href="https://www.linkedin.com/in/arvindkumars/"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section" id="testimonials" style="background: var(--neutral-800);">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">Testimonials</div>
+                <h2 class="section-title">What Our Members Say</h2>
+                <p class="section-subtitle">
+                    Discover how ZenHealth has transformed the lives of thousands of wellness enthusiasts worldwide.
+                </p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-quote">
+                        "ZenHealth completely transformed my approach to wellness. The meditation programs helped me reduce anxiety by 80%, and I've never felt more balanced and peaceful in my life. The personalized approach makes all the difference."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Emma Martinez">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Emma Martinez</h4>
+                            <p>Marketing Executive</p>
+                            <div class="testimonial-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-quote">
+                        "The fitness programs are incredible! I've gained 25% more strength and improved my cardiovascular health significantly. The AI-powered form correction helped me avoid injuries and maximize my workouts."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="James Davis">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>James Davis</h4>
+                            <p>Software Engineer</p>
+                            <div class="testimonial-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-quote">
+                        "As a busy mom, finding time for self-care was impossible. ZenHealth's flexible programs fit perfectly into my schedule, and I've rediscovered my inner peace. The nutrition coaching has been life-changing."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Sarah Kim">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Kim</h4>
+                            <p>Mother & Teacher</p>
+                            <div class="testimonial-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-quote">
+                        "The mental health support has been a game-changer for me. Having access to licensed therapists and the 24/7 support hotline gave me the confidence to tackle my depression. I'm now living my best life."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Michael Thompson">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Michael Thompson</h4>
+                            <p>Graphic Designer</p>
+                            <div class="testimonial-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-quote">
+                        "The comprehensive wellness coaching approach helped me create sustainable lifestyle changes. My energy levels have increased dramatically, and I've lost 30 pounds while gaining muscle mass."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="Lisa Rodriguez">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Lisa Rodriguez</h4>
+                            <p>Business Owner</p>
+                            <div class="testimonial-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-quote">
+                        "The nutrition guidance completely changed my relationship with food. I learned to fuel my body properly, and my chronic fatigue disappeared. The meal planning feature saves me hours every week."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 202422.png" alt="David Chen">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>David Chen</h4>
+                            <p>Financial Analyst</p>
+                            <div class="testimonial-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section" id="blog">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">Latest Insights</div>
+                <h2 class="section-title">Wellness Blog & Resources</h2>
+                <p class="section-subtitle">
+                    Stay informed with the latest wellness trends, expert tips, and scientific research to enhance your journey.
+                </p>
+            </div>
+            <div class="blog-grid">
+                <div class="blog-card fade-in">
+                    <div class="blog-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 203147.png" alt="Meditation techniques for beginners">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Meditation</span>
+                            <span>•</span>
+                            <span>March 15, 2024</span>
+                            <span>•</span>
+                            <span>5 min read</span>
+                        </div>
+                        <h3>10 Simple Meditation Techniques for Beginners</h3>
+                        <p class="blog-excerpt">
+                            Discover easy-to-follow meditation practices that can help you start your mindfulness journey and reduce stress in just 10 minutes a day.
+                        </p>
+                        <a href="#" class="blog-link">
+                            <button class="blog-link" onclick="window.open('https://youtu.be/ZiQh8jA5tVM?si=Z9LO_id4fFLglTIS', '_blank')" style="border:none;background:none;padding:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.5rem;">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="blog-card fade-in">
+                    <div class="blog-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 203308.png" alt="Nutrition for mental health">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Nutrition</span>
+                            <span>•</span>
+                            <span>March 12, 2024</span>
+                            <span>•</span>
+                            <span>7 min read</span>
+                        </div>
+                        <h3>The Science Behind Nutrition and Mental Health</h3>
+                        <p class="blog-excerpt">
+                            Explore how the foods you eat directly impact your mood, cognitive function, and overall mental well-being based on latest research.
+                        </p>
+                        <a href="#" class="blog-link">
+                            <button class="blog-link" onclick="window.open('https://youtu.be/ZiQh8jA5tVM?si=Z9LO_id4fFLglTIS', '_blank')" style="border:none;background:none;padding:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.5rem;">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="blog-card fade-in">
+                    <div class="blog-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 203555.png" alt="Home workout routines">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Fitness</span>
+                            <span>•</span>
+                            <span>March 10, 2024</span>
+                            <span>•</span>
+                            <span>6 min read</span>
+                        </div>
+                        <h3>Effective Home Workouts: No Equipment Needed</h3>
+                        <p class="blog-excerpt">
+                            Learn how to build strength, improve cardiovascular health, and stay fit with these equipment-free exercises you can do anywhere.
+                        </p>
+                        <a href="#" class="blog-link">
+                            <button class="blog-link" onclick="window.open('https://youtu.be/ZiQh8jA5tVM?si=Z9LO_id4fFLglTIS', '_blank')" style="border:none;background:none;padding:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.5rem;">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="blog-card fade-in">
+                    <div class="blog-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 203805.png" alt="Sleep optimization tips">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Sleep</span>
+                            <span>•</span>
+                            <span>March 8, 2024</span>
+                            <span>•</span>
+                            <span>8 min read</span>
+                        </div>
+                        <h3>Optimize Your Sleep for Better Recovery and Performance</h3>
+                        <p class="blog-excerpt">
+                            Discover evidence-based strategies to improve your sleep quality, duration, and consistency for optimal health and performance.
+                        </p>
+                         <a href="#" class="blog-link">
+                            <button class="blog-link" onclick="window.open('https://youtu.be/ZiQh8jA5tVM?si=Z9LO_id4fFLglTIS', '_blank')" style="border:none;background:none;padding:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.5rem;">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="blog-card fade-in">
+                    <div class="blog-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 203934.png" alt="Stress management techniques">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Mental Health</span>
+                            <span>•</span>
+                            <span>March 5, 2024</span>
+                            <span>•</span>
+                            <span>9 min read</span>
+                        </div>
+                        <h3>Advanced Stress Management Techniques for Modern Life</h3>
+                        <p class="blog-excerpt">
+                            Master proven stress management strategies that help you maintain calm and focus in today's fast-paced, demanding world.
+                        </p>
+                        <a href="#" class="blog-link">
+                            <button class="blog-link" onclick="window.open('https://youtu.be/ZiQh8jA5tVM?si=Z9LO_id4fFLglTIS', '_blank')" style="border:none;background:none;padding:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.5rem;">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="blog-card fade-in">
+                    <div class="blog-image">
+                        <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 204113.png" alt="Holistic wellness approach">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Wellness</span>
+                            <span>•</span>
+                            <span>March 3, 2024</span>
+                            <span>•</span>
+                            <span>10 min read</span>
+                        </div>
+                        <h3>Building a Sustainable Holistic Wellness Routine</h3>
+                        <p class="blog-excerpt">
+                            Learn how to create a comprehensive wellness routine that integrates physical, mental, and spiritual practices for lasting transformation.
+                        </p>
+                        <a href="#" class="blog-link">
+                            <button class="blog-link" onclick="window.open('https://youtu.be/ZiQh8jA5tVM?si=Z9LO_id4fFLglTIS', '_blank')" style="border:none;background:none;padding:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.5rem;">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="section" style="background: var(--neutral-800);">
+        <div class="section-container">
+            <div class="newsletter fade-in">
+                <h3>Stay Connected to Your Wellness Journey</h3>
+                <p>
+                    Subscribe to our newsletter for exclusive wellness tips, expert insights, special offers, and updates on our latest programs and features.
+                </p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">Subscribe Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="section-container">
+            <div class="section-header fade-in">
+                <div class="section-badge">Get In Touch</div>
+                <h2 class="section-title">Ready to Transform Your Life?</h2>
+                <p class="section-subtitle">
+                    Take the first step towards a healthier, happier you. Our wellness experts are here to guide you every step of the way.
+                </p>
+            </div>
+            <div class="about-grid">
+                <div class="about-content fade-in">
+                    <h3>Start Your Wellness Journey Today</h3>
+                    <p>
+                        Whether you're looking to reduce stress, improve your fitness, enhance your nutrition, or find mental clarity, 
+                        ZenHealth has the tools and expertise to help you achieve your goals.
+                    </p>
+                    <p>
+                        Join thousands of satisfied members who have already transformed their lives through our comprehensive wellness platform.
+                    </p>
+                    <div class="hero-cta-group" style="justify-content: flex-start; margin-top: 2rem;">
+                        <a href="#services" class="hero-cta hero-cta-primary">
+                            <i class="fas fa-rocket"></i>
+                            Start Free Trial
+                        </a>
+                        <a href="#" class="hero-cta hero-cta-secondary">
+                            <i class="fas fa-phone"></i>
+                            Schedule Call
+                        </a>
+                    </div>
+                </div>
+                <div class="about-image fade-in">
+                    <img src="c:\Users\arvin\OneDrive\Pictures\Screenshots\Screenshot 2025-06-06 204506.png" alt="Wellness consultation session">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3>ZenHealth</h3>
+                <p style="color: var(--neutral-400); margin-bottom: 2rem; line-height: 1.6;">
+                    Transforming lives through holistic wellness. Join our community of wellness enthusiasts and start your journey to a healthier, happier you.
+                </p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/arvindsurya._.kumar/" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/in/arvindkumars/" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/arvindsurya._.kumar/" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/arvindkumars/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.linkedin.com/in/arvindkumars/" class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Meditation & Mindfulness</a></li>
+                    <li><a href="#">Personal Fitness</a></li>
+                    <li><a href="#">Nutrition Coaching</a></li>
+                    <li><a href="#">Mental Health Support</a></li>
+                    <li><a href="#">Wellness Coaching</a></li>
+                    <li><a href="#">Premium Package</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Wellness Blog</a></li>
+                    <li><a href="#">Exercise Library</a></li>
+                    <li><a href="#">Meditation Guides</a></li>
+                    <li><a href="#">Nutrition Database</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Research & Studies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press & Media</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">HIPAA Compliance</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ZenHealth. All rights reserved. | Empowering wellness journeys worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loading').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading').style.display = 'none';
+                }, 500);
+            }, 3000);
+        });
+
+        // Custom cursor
+        const cursor = document.getElementById('customCursor');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('active');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('active');
+        });
+
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.getElementById('scrollProgress');
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        mobileToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-link, .nav-cta').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Newsletter form submission
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('button');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                submitBtn.textContent = 'Subscribed!';
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    this.reset();
+                    alert('Thank you for subscribing');
+                }, 2000);
+            }, 1000);
+        });
+
+        // Service CTA buttons
+        document.querySelectorAll('.service-cta').forEach(button => {
+            button.addEventListener('click', function() {
+                const originalText = this.textContent;
+                this.textContent = 'Starting...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.textContent = 'Welcome!';
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.disabled = false;
+                        alert('Welcome to ZenHealth! We\'ll be in touch shortly to get you started.');
+                    }, 2000);
+                }, 1000);
+            });
+        });
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('button, .hero-cta, .nav-cta').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero-video');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+
+        // Counter animation for stats
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start);
+                }
+            }, 16);
+        }
+
+        // Trigger counter animations when stats come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.hero-stat-number, .about-stat-number');
+                    counters.forEach(counter => {
+                        const target = parseInt(counter.textContent.replace(/\D/g, ''));
+                        if (target) {
+                            animateCounter(counter, target);
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        document.querySelectorAll('.hero-stats, .about-stats').forEach(stats => {
+            statsObserver.observe(stats);
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.feature-card, .service-card, .team-card, .testimonial-card, .blog-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Accessibility improvements
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                mobileToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Performance optimization for low-end devices
+        if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
+            document.documentElement.style.setProperty('--animation-duration', '0.2s');
+            // Reduce animations for better performance
+            document.querySelectorAll('.floating-icon').forEach(el => {
+                el.style.animation = 'none';
+            });
+        }
+
+        // Add focus management for better accessibility
+        document.querySelectorAll('a, button, input, select, textarea').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.style.outline = '2px solid var(--primary-emerald)';
+                this.style.outlineOffset = '2px';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.style.outline = 'none';
+            });
+        });
+
+        // Initialize all animations and effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add stagger animation to grid items
+            document.querySelectorAll('.features-grid, .services-grid, .team-grid, .testimonials-grid, .blog-grid').forEach(grid => {
+                const items = grid.children;
+                Array.from(items).forEach((item, index) => {
+                    item.style.animationDelay = `${index * 0.1}s`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
